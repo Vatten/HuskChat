@@ -19,7 +19,6 @@
 
 package net.william278.huskchat.user;
 
-import de.themoep.minedown.adventure.MineDown;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;
 import net.william278.huskchat.HuskChat;
@@ -28,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 
 import java.util.UUID;
+import java.util.logging.Level;
 
 /**
  * Abstract cross-platform Player object
@@ -84,9 +84,5 @@ public abstract class OnlineUser extends User {
 
     public void sendMessage(@NotNull Component message) {
         getAudience().sendMessage(message);
-    }
-
-    public void sendMessage(@NotNull MineDown mineDown) {
-        sendMessage(mineDown.toComponent());
     }
 }

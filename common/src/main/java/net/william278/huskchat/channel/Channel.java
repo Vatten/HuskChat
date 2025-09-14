@@ -20,7 +20,6 @@
 package net.william278.huskchat.channel;
 
 import de.exlll.configlib.Configuration;
-import java.util.regex.Pattern;
 import lombok.*;
 import net.william278.huskchat.config.Settings;
 import net.william278.huskchat.user.OnlineUser;
@@ -30,6 +29,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Builder
 @Getter

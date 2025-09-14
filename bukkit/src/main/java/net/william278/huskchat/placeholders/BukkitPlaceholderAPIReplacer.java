@@ -30,10 +30,10 @@ public class BukkitPlaceholderAPIReplacer implements PlaceholderReplacer {
 
     @Override
     public CompletableFuture<String> formatPlaceholders(@NotNull String message, @NotNull OnlineUser player) {
-        return CompletableFuture.completedFuture(PlaceholderAPI.setPlaceholders(
-                ((BukkitUser) player).getPlayer(),
+        return player instanceof BukkitUser bukkitPlayer ? CompletableFuture.completedFuture(PlaceholderAPI.setPlaceholders(
+                bukkitPlayer.getPlayer(),
                 message
-        ));
+        )) : CompletableFuture.completedFuture(message);
     }
 
 }

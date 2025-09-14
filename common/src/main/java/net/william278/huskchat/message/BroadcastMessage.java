@@ -19,10 +19,9 @@
 
 package net.william278.huskchat.message;
 
-import de.themoep.minedown.adventure.MineDown;
-import de.themoep.minedown.adventure.MineDownParser;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.william278.huskchat.HuskChat;
 import net.william278.huskchat.config.Settings;
 import net.william278.huskchat.user.OnlineUser;
@@ -77,8 +76,8 @@ public class BroadcastMessage {
 
     public void sendMessage(@NotNull OnlineUser player) {
         final TextComponent.Builder componentBuilder = Component.text();
-        componentBuilder.append(new MineDown(plugin.getSettings().getBroadcastCommand().getFormat()).toComponent());
-        componentBuilder.append(new MineDown(message).disable(MineDownParser.Option.ADVANCED_FORMATTING).toComponent());
+        componentBuilder.append(MiniMessage.miniMessage().deserialize(plugin.getSettings().getBroadcastCommand().getFormat()));
+        componentBuilder.append(MiniMessage.miniMessage().deserialize(message));
         player.sendMessage(componentBuilder.build());
     }
 

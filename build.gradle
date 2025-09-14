@@ -1,7 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '8.3.9'
     id 'org.cadixdev.licenser' version '0.6.1' apply false
     id 'org.ajoberstar.grgit' version '5.2.2'
     id 'maven-publish'
@@ -53,12 +53,12 @@ publishing {
 }
 
 allprojects {
-    apply plugin: 'com.github.johnrengelman.shadow'
+    apply plugin: 'com.gradleup.shadow'
     apply plugin: 'org.cadixdev.licenser'
     apply plugin: 'java'
 
     compileJava.options.encoding = 'UTF-8'
-    compileJava.options.release.set 17
+    compileJava.options.release.set 21
     javadoc.options.encoding = 'UTF-8'
     javadoc.options.addStringOption('Xdoclint:none', '-quiet')
 
@@ -74,6 +74,7 @@ allprojects {
         maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
         maven { url = 'https://jitpack.io' }
         maven { url = 'https://mvn-repo.arim.space/lesser-gpl3/' }
+        maven { url = 'https://repo.spicord.org/' }
     }
 
     dependencies {

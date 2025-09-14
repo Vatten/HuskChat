@@ -20,14 +20,13 @@
 package net.william278.huskchat.config;
 
 import de.exlll.configlib.Configuration;
-import de.themoep.minedown.adventure.MineDown;
-import de.themoep.minedown.adventure.MineDownParser;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.william278.huskchat.HuskChat;
 import net.william278.huskchat.channel.Channel;
 import net.william278.huskchat.user.OnlineUser;
@@ -39,6 +38,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.TreeMap;
+import java.util.logging.Level;
 
 @SuppressWarnings("FieldMayBeFinal")
 @Getter
@@ -52,7 +52,6 @@ public class Locales {
             ┃    Developed by William278   ┃
             ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
             ┣╸ See plugin about menu for international locale credits
-            ┣╸ Formatted in MineDown: https://github.com/Phoenix616/MineDown
             ┗╸ Translate HuskClaims: https://william278.net/docs/huskchat/translations""";
 
     private static final String SILENT_JOIN_PERMISSION = "huskchat.silent_join";
@@ -84,22 +83,19 @@ public class Locales {
             replacementIndexer = replacementIndexer + 1;
         }
 
-        player.sendMessage(new MineDown(locale));
+        player.sendMessage(MiniMessage.miniMessage().deserialize(locale));
     }
 
     public void sendChannelMessage(@NotNull OnlineUser target, @NotNull OnlineUser sender, @NotNull Channel channel,
                                    @NotNull String message, @NotNull HuskChat plugin) {
         plugin.replacePlaceholders(sender, channel.getFormat()).thenAccept(replaced -> {
-            final Component format = new MineDown(replaced).toComponent();
-            final TextComponent.Builder builder = Component.text().append(format);
+            StringBuilder replacedBuilder = new StringBuilder(replaced);
             if (sender.hasPermission(FORMATTED_CHAT_PERMISSION, false)) {
-                builder.append(new MineDown(message)
-                        .disable(MineDownParser.Option.ADVANCED_FORMATTING)
-                        .toComponent().color(getFormatColor(format)));
+                replacedBuilder.append(message);
             } else {
-                builder.append(Component.text(message).color(getFormatColor(format)));
+                replacedBuilder.append(MiniMessage.miniMessage().escapeTags(message));
             }
-            target.sendMessage(builder.build());
+            target.sendMessage(MiniMessage.miniMessage().deserialize(replacedBuilder.toString()));
         });
     }
 
@@ -112,21 +108,18 @@ public class Locales {
             if (recipients.size() > 1) {
                 replaced = replaced.replace("%group_amount_subscript%", superscriptNumber(recipients.size() - 1))
                         .replace("%group_amount%", Integer.toString(recipients.size() - 1))
-                        .replace("%group_members_comma_separated%", getGroupMemberList(recipients, ","))
-                        .replace("%group_members%", MineDown.escape(getGroupMemberList(recipients, "\n")));
+                        .replace("%group_members_comma_separated%", getGroupMemberList(recipients, ", "))
+                        .replace("%group_members%", MiniMessage.miniMessage().escapeTags(getGroupMemberList(recipients, "\n")));
             }
 
-            final TextComponent.Builder builder = Component.text();
-            final Component format = new MineDown(replaced).toComponent();
-            builder.append(format);
+            StringBuilder replacedBuilder = new StringBuilder();
             if (sender.hasPermission(FORMATTED_CHAT_PERMISSION, false)) {
-                builder.append(new MineDown(message).disable(MineDownParser.Option.ADVANCED_FORMATTING)
-                        .toComponent().color(getFormatColor(format)));
+                replacedBuilder.append(replaced).append(message);
             } else {
-                builder.append(Component.text(message).color(getFormatColor(format)));
+                replacedBuilder.append(replaced).append(MiniMessage.miniMessage().escapeTags(message));
             }
 
-            sender.sendMessage(builder.build());
+            sender.sendMessage(MiniMessage.miniMessage().deserialize(replacedBuilder.toString()));
         });
     }
 
@@ -156,22 +149,19 @@ public class Locales {
             if (recipients.size() > 1) {
                 replaced = replaced.replace("%group_amount_subscript%", superscriptNumber(recipients.size() - 1))
                         .replace("%group_amount%", Integer.toString(recipients.size() - 1))
-                        .replace("%group_members_comma_separated%", getGroupMemberList(recipients, ","))
-                        .replace("%group_members%", MineDown.escape(getGroupMemberList(recipients, "\n")));
+                        .replace("%group_members_comma_separated%", getGroupMemberList(recipients, ", "))
+                        .replace("%group_members%", MiniMessage.miniMessage().escapeTags(getGroupMemberList(recipients, "\n")));
             }
 
-            final TextComponent.Builder builder = Component.text();
-            final Component format = new MineDown(replaced).toComponent();
-            builder.append(format);
+            StringBuilder replacedBuilder = new StringBuilder(replaced);
             if (sender.hasPermission(FORMATTED_CHAT_PERMISSION, false)) {
-                builder.append(new MineDown(message).disable(MineDownParser.Option.ADVANCED_FORMATTING)
-                        .toComponent().color(getFormatColor(format)));
+                replacedBuilder.append(message);
             } else {
-                builder.append(Component.text(message).color(getFormatColor(format)));
+                replacedBuilder.append(MiniMessage.miniMessage().escapeTags(message));
             }
 
             for (final OnlineUser recipient : recipients) {
-                recipient.sendMessage(builder.build());
+                recipient.sendMessage(MiniMessage.miniMessage().deserialize(replacedBuilder.toString()));
             }
         });
     }
@@ -181,9 +171,9 @@ public class Locales {
         plugin.replacePlaceholders(sender, plugin.getSettings().getLocalSpy().getFormat())
                 .thenAccept(replaced -> {
                     final TextComponent.Builder componentBuilder = Component.text()
-                            .append(new MineDown(replaced.replace("%spy_color%", spyColor.colorCode)
+                            .append(MiniMessage.miniMessage().deserialize(replaced.replace("%spy_color%", "<" + spyColor.name().toLowerCase() + ">")
                                     .replace("%channel%", channel.getId()) +
-                                    MineDown.escape(message)).toComponent());
+                                    MiniMessage.miniMessage().escapeTags(message)));
                     spy.sendMessage(componentBuilder.build());
                 });
     }
@@ -201,10 +191,10 @@ public class Locales {
                 replaced = replaced.replace("%group_amount_subscript%", superscriptNumber(receivers.size() - 1))
                         .replace("%group_amount%", Integer.toString(receivers.size() - 1))
                         .replace("%group_members_comma_separated%", getGroupMemberList(receivers, ","))
-                        .replace("%group_members%", MineDown.escape(getGroupMemberList(receivers, "\n")));
+                        .replace("%group_members%", MiniMessage.miniMessage().escapeTags(getGroupMemberList(receivers, "\n")));
             }
-            spy.sendMessage(new MineDown(
-                    replaced.replace("%spy_color%", spyColor.colorCode) + MineDown.escape(message)
+            spy.sendMessage(MiniMessage.miniMessage().deserialize(
+                    replaced.replace("%spy_color%", "<" + spyColor.name().toLowerCase() + ">") + MiniMessage.miniMessage().escapeTags(message)
             ));
         }));
     }
@@ -216,7 +206,7 @@ public class Locales {
         plugin.replacePlaceholders(player,
                         plugin.getDataGetter().getTextFromNode(player, "huskchat.join_message")
                                 .orElse(plugin.getSettings().getJoinAndQuitMessages().getJoin().getFormat()))
-                .thenAccept(replaced -> sendJoinQuitMessage(player, new MineDown(replaced).toComponent(), plugin));
+                .thenAccept(replaced -> sendJoinQuitMessage(player, MiniMessage.miniMessage().deserialize(replaced), plugin));
     }
 
     public void sendQuitMessage(@NotNull OnlineUser player, @NotNull HuskChat plugin) {
@@ -226,7 +216,7 @@ public class Locales {
         plugin.replacePlaceholders(player,
                         plugin.getDataGetter().getTextFromNode(player, "huskchat.quit_message")
                                 .orElse(plugin.getSettings().getJoinAndQuitMessages().getQuit().getFormat()))
-                .thenAccept(replaced -> sendJoinQuitMessage(player, new MineDown(replaced).toComponent(), plugin));
+                .thenAccept(replaced -> sendJoinQuitMessage(player, MiniMessage.miniMessage().deserialize(replaced), plugin));
     }
 
     // Dispatch a join/quit message to the correct server

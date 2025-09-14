@@ -21,8 +21,6 @@ package net.william278.huskchat.config;
 
 import de.exlll.configlib.Comment;
 import de.exlll.configlib.Configuration;
-import java.util.Map.Entry;
-import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +30,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 /**
  * Class for loading and storing {@link Channel}s
@@ -69,7 +69,7 @@ public class Channels {
             // Local channel
             Channel.builder()
                     .id("local")
-                    .format("%fullname%&r&f: ")
+                    .format("%fullname%<reset><white>: ")
                     .broadcastScope(Channel.BroadcastScope.LOCAL)
                     .shortcutCommands(List.of("/local", "/l"))
                     .build(),
@@ -77,7 +77,7 @@ public class Channels {
             // Global channel
             Channel.builder()
                     .id("global")
-                    .format("&#00fb9a&[G]&r&f %fullname%&r&f: ")
+                    .format("<color:#00fb9a>[G]</color><reset><white> %fullname%<reset><white>: ")
                     .broadcastScope(Channel.BroadcastScope.GLOBAL)
                     .shortcutCommands(List.of("/global", "/g"))
                     .build(),
@@ -85,7 +85,7 @@ public class Channels {
             // Staff channel
             Channel.builder()
                     .id("staff")
-                    .format("&e[Staff] %name%: &7")
+                    .format("<yellow>[Staff] %name%:</yellow><gray> ")
                     .broadcastScope(Channel.BroadcastScope.GLOBAL)
                     .filtered(false)
                     .permissions(Channel.ChannelPermissions.builder()
@@ -98,7 +98,7 @@ public class Channels {
             // HelpOp channel
             Channel.builder()
                     .id("helpop")
-                    .format("&#00fb9a&[HelpOp] %name%:&7")
+                    .format("<color:#00fb9a>[HelpOp] %name%:</color><gray> ")
                     .broadcastScope(Channel.BroadcastScope.GLOBAL)
                     .filtered(false)
                     .permissions(Channel.ChannelPermissions.builder()

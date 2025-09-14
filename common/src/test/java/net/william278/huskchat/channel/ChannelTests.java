@@ -19,9 +19,10 @@
 
 package net.william278.huskchat.channel;
 
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 public class ChannelTests {
   Channel plainTextChannel = Channel

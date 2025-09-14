@@ -25,7 +25,6 @@ import net.william278.huskchat.channel.Channel;
 import net.william278.huskchat.user.OnlineUser;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Map;
 import java.util.Optional;
 
 @AllArgsConstructor

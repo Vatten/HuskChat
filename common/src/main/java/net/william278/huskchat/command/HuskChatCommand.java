@@ -19,9 +19,9 @@
 
 package net.william278.huskchat.command;
 
-import de.themoep.minedown.adventure.MineDown;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.william278.desertwell.about.AboutMenu;
 import net.william278.desertwell.util.UpdateChecker;
 import net.william278.huskchat.HuskChat;
@@ -81,7 +81,7 @@ public class HuskChatCommand extends CommandBase {
                 });
                 case "reload" -> {
                     plugin.loadConfig();
-                    player.sendMessage(new MineDown("[HuskChat](#00fb9a bold) &#00fb9a&| Reloaded config & message files."));
+                    player.sendMessage(MiniMessage.miniMessage().deserialize("<#00fb9a><b>HuskChat</b> | Reloaded config & message files."));
                 }
                 default -> plugin.getLocales().sendMessage(player, "error_invalid_syntax", getUsage());
             }

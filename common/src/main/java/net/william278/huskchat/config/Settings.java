@@ -118,17 +118,17 @@ public class Settings {
             private int maxSize = 10;
         }
 
-        @Comment("Formats for private messages (uses MineDown)")
+        @Comment("Formats for private messages (uses MiniMessage)")
         private MessageFormat format = new MessageFormat();
 
         @Getter
         @Configuration
         @NoArgsConstructor(access = AccessLevel.PRIVATE)
         public static class MessageFormat {
-            private String inbound = "&e&l%name% &8→ &e&lYou&8: &f";
-            private String outbound = "&e&lYou &8→ &e&l%name%&8: &f";
-            private String groupInbound = "&e&l%name% &8→ &e&lYou[₍₊%group_amount_subscript%₎](gray show_text=&7%group_members%)&8: &f";
-            private String groupOutbound = "&e&lYou &8→ &e&l%name%[₍₊%group_amount_subscript%₎](gray show_text=&7%group_members%)&8: &f";
+            private String inbound = "<yellow><b>%name%</b></yellow> <dark_gray>→</dark_gray> <yellow><b>You</b></yellow><dark_gray>:</dark_gray><white> ";
+            private String outbound = "<yellow><b>You</b></yellow> <dark_gray>→</dark_gray> <yellow><b>%name%</b></yellow><dark_gray>:</dark_gray><white> ";
+            private String groupInbound = "<yellow><b>%name%</b></yellow> <dark_gray>→</dark_gray> <yellow><b>You<hover:show_text:'<gray>%group_members%</gray>'><gray>₍₊%group_amount_subscript%₎</gray></hover></b></yellow><dark_gray>:</dark_gray><white> ";
+            private String groupOutbound = "<yellow><b>You</b></yellow> <dark_gray>→</dark_gray> <yellow><b>%name%</b></yellow><hover:show_text:'<gray>%group_members%</gray>'><gray>₍₊%group_amount_subscript%₎</gray></hover><dark_gray>:</dark_gray><white> ";
         }
 
         @Comment("(Bungee/Velocity only) List of servers where private messages cannot be sent")
@@ -156,8 +156,8 @@ public class Settings {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class SocialSpySettings {
         private boolean enabled = true;
-        private String format = "&e[Spy] &7%name% &8→ &7%receiver_name%:%spy_color% ";
-        private String groupFormat = "&e[Spy] &7%name% &8→ &7%receiver_name% [₍₊%group_amount_subscript%₎](gray show_text=&7%group_members% suggest_command=/msg %group_members_comma_separated% ):%spy_color% ";
+        private String format = "<yellow>[Spy]</yellow> <gray>%name%</gray> <dark_gray>→</dark_gray> <gray>%receiver_name%</gray>:%spy_color% ";
+        private String groupFormat = "<yellow>[Spy]</yellow> <gray>%name%</gray> <dark_gray>→</dark_gray> <gray>%receiver_name% <hover:show_text:'<gray>%group_members%</gray>'><click:suggest_command:'/msg %group_members_comma_separated% '>₍₊%group_amount_subscript%₎</click></hover>:</gray>%spy_color% ";
         @Getter(AccessLevel.NONE)
         private List<String> socialspyAliases = List.of("/socialspy", "/ss");
 
@@ -177,7 +177,7 @@ public class Settings {
     @AllArgsConstructor(access = AccessLevel.PRIVATE)
     public static class LocalSpySettings {
         private boolean enabled = true;
-        private String format = "&e[Spy] &7[%channel%] %name%&8:%spy_color% ";
+        private String format = "<yellow>[Spy]</yellow> <gray>[%channel%] %name%</gray><dark_gray>:</dark_gray>%spy_color% ";
         @Getter(AccessLevel.NONE)
         private List<String> localspyAliases = List.of("/localspy", "/ls");
         @Comment("List of channels to exclude from local spy")
@@ -199,7 +199,7 @@ public class Settings {
         private boolean enabled = true;
         @Getter(AccessLevel.NONE)
         private List<String> broadcastAliases = List.of("/broadcast", "/alert");
-        private String format = "&6[Broadcast]&e ";
+        private String format = "<gold>[Broadcast]</gold><yellow> ";
         private boolean logToConsole = true;
         private String logFormat = "[BROADCAST]: ";
 
@@ -219,11 +219,11 @@ public class Settings {
 
         @Comment({"Use the \"huskchat.join_message.[text]\" permission to override this.",
                 "Use the \"huskchat.silent_join\" permission to silence for a user."})
-        private ConnectionMessage join = new ConnectionMessage(true, "&e%name% joined the network");
+        private ConnectionMessage join = new ConnectionMessage(true, "<yellow>%name% joined the network</yellow>");
 
         @Comment({"Use the \"huskchat.quit_message.[text]\" permission to override this.",
                 "Use the \"huskchat.silent_quit\" permission to silence for a user."})
-        private ConnectionMessage quit = new ConnectionMessage(true, "&e%name% left the network");
+        private ConnectionMessage quit = new ConnectionMessage(true, "<yellow>%name% left the network</yellow>");
 
         @Comment("Note that on Velocity/Bungee, PASSTHROUGH modes won't cancel local join/quit messages")
         private Channel.BroadcastScope broadcastScope = Channel.BroadcastScope.GLOBAL;

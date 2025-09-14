@@ -3,19 +3,17 @@ plugins {
 }
 
 dependencies {
-    api 'commons-io:commons-io:2.16.1'
-    api 'de.themoep:minedown-adventure:1.7.3-SNAPSHOT'
+    api 'commons-io:commons-io:2.20.0'
     api 'net.william278:profanitycheckerapi:3.0'
     api 'net.william278:desertwell:2.0.4'
     api 'dev.vankka:mcdiscordreserializer:4.3.0'
     api 'de.exlll:configlib-yaml:4.5.0'
 
-    compileOnly 'net.kyori:adventure-api:4.17.0'
-    compileOnly 'net.kyori:adventure-platform-api:4.3.2'
+    compileOnly "net.kyori:adventure-text-minimessage:4.17.0"
     compileOnly 'net.william278:papiproxybridge:1.5'
     compileOnly 'net.luckperms:api:5.4'
-    compileOnly 'com.github.Spicord.Spicord:spicord-common:v5-SNAPSHOT'
-    compileOnly 'net.dv8tion:JDA:5.0.0-beta.4'
+    compileOnly 'org.spicord:spicord-common:5.4.0'
+    compileOnly 'net.dv8tion:JDA:5.0.0-beta.16'
     compileOnly 'org.jetbrains:annotations:24.1.0'
     compileOnly 'org.projectlombok:lombok:1.18.34'
 

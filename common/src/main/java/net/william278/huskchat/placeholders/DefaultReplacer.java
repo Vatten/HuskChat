@@ -155,9 +155,11 @@ public class DefaultReplacer implements PlaceholderReplacer {
 
         // Just escaping __ should suffice as the only special character allowed in Minecraft usernames is the underscore.
         // By placing the escape character in the middle, the MineDown parser no longer sees this as a formatting code.
+        // UPDATE: No longer needed as we're using MiniMessage now, but leaving in for potential future use
         @NotNull
         private static String escape(@NotNull String string) {
-            return string.replace("__", "_\\_");
+//            return string.replace("__", "_\\_");
+            return string;
         }
 
     }
